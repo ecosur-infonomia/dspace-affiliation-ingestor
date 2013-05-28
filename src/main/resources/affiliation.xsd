@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           targetNamespace="http://www.ecosur.mx/sword/extension"
+           xmlns="http://www.ecosur.mx/sword/extension">
+    <!--
+        The Affilation schema defines the names, identifiers and URLs to be used
+        in order to affiliate the target Item with an individual or set of collections.
+
+        Andrew Waterman, Chiapas, 28/05/2013.
+    -->
+    <xs:element name="affiliation">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="collection">
+                    <xs:complexType>
+                        <xs:attribute name="href" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
