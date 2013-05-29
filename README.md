@@ -1,4 +1,4 @@
-dspace-affiliation-ingestor
+AffiliatingIngester
 ===========================
 
-An ingestor for dspace that affiliates a given item with a sequence of collections.
+An ingester for dspace that affiliates a given item with a sequence of collections.
