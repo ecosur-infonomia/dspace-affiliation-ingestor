@@ -1,0 +1,41 @@
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <content type="application/zip" src="http://localhost:8080/swordv2/edit-media/25"/>
+    <link href="http://localhost:8080/swordv2/edit-media/25" rel="edit-media" type="application/zip"/>
+    <published>2013-05-28T05:00:00.000Z</published>
+    <abstract xmlns="http://purl.org/dc/terms/">The purpose of this paper is to describe the repository deposit
+        protocol, Simple Web-service Offering Repository Deposit (SWORD), its development iteration, and some of its
+        potential use cases. In addition, seven case studies of institutional use of SWORD are provided.
+    </abstract>
+    <provenance xmlns="http://purl.org/dc/terms/">Made available in DSpace on 2013-05-28T16:57:38Z (GMT). No. of
+        bitstreams: 8sword-2013-05-28T11:57:37.original.xml: 880 bytes, checksum: 3dd805bf0a72523501b269ee9178cc03
+        (MD5)esources/Sword.pdf: 120952 bytes, checksum: a872461244179c6a3e58604957d879e4 (MD5)esources/Example.zip:
+        33777 bytes, checksum: 2b25f82ba67284461d4a481d7a06dd28 (MD5)esources/Sword.pdf: 120952 bytes, checksum:
+        a872461244179c6a3e58604957d879e4 (MD5)mets.xml: 6145 bytes, checksum: fb9ac44959eb3207c353adf5a1fc0eab
+        (MD5)pdf1.pdf: 11083 bytes, checksum: 348fb9ceae472a41df626a1610d764c5 (MD5)
+        pdf2.pdf: 11287 bytes, checksum: 61feddae774ae4e8def8251ce0d0220b (MD5)
+        pdf3.pdf: 11323 bytes, checksum: be8ecd0c62f0281da2013421bc88c849 (MD5)
+    </provenance>
+    <title xmlns="http://purl.org/dc/terms/">If sword is the Answer</title>
+    <issued xmlns="http://purl.org/dc/terms/">2013-05-28</issued>
+    <available xmlns="http://purl.org/dc/terms/">2013-05-28T16:57:38Z</available>
+    <summary type="text">The purpose of this paper is to describe the repository deposit protocol, Simple Web-service
+        Offering Repository Deposit (SWORD), its development iteration, and some of its potential use cases. In
+        addition, seven case studies of institutional use of SWORD are provided.
+    </summary>
+    <title type="text">If sword is the Answer</title>
+    <rights type="text"></rights>
+    <updated>2013-05-28T05:00:00.000Z</updated>
+    <generator uri="http://www.dspace.org/ns/sword/2.0/" version="2.0">dspace-help@myu.edu</generator>
+    <id>http://localhost:8080/swordv2/edit/25</id>
+    <link href="http://localhost:8080/swordv2/edit/25" rel="edit"/>
+    <link href="http://localhost:8080/swordv2/edit/25" rel="http://purl.org/net/sword/terms/add"/>
+    <link href="http://localhost:8080/swordv2/edit-media/25.atom" rel="edit-media"
+          type="application/atom+xml; type=feed"/>
+    <packaging xmlns="http://purl.org/net/sword/terms/">http://purl.org/net/sword/package/SimpleZip</packaging>
+    <link href="http://localhost:8080/swordv2/statement/25.atom" rel="http://purl.org/net/sword/terms/statement"
+          type="application/atom+xml; type=feed"/>
+    <link href="http://localhost:8080/swordv2/statement/25.rdf" rel="http://purl.org/net/sword/terms/statement"
+          type="application/rdf+xml"/>
+    <treatment xmlns="http://purl.org/net/sword/terms/">no treatment information available</treatment>
+    <link href="http://hdl.handle.net/123456789/28" rel="alternate"/>
+</entry>
