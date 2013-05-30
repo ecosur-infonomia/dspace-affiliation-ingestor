@@ -16,13 +16,17 @@ import java.util.List;
 /**
  * SwordAffiliatingIngester
  *
- * Affiliates an Item with a group of collections passed in as part of the
- * sword deposit.
+ * Affiliates an Item with a set of collections passed in with the
+ * sword update deposit.
  *
+ * Otherwise, invokes the default Entry ingestion behavior coded
+ * within the SimpleDCEntryIngester (default ingester).
+ *
+ * @author "Andrew Waterman" <awaterma@ecosur.mx>
  */
 public class SwordAffiliatingIngester implements SwordEntryIngester {
 
-    /* Default ingester */
+    /* Default ingester. Required due to "Single" Plugin. */
     private SimpleDCEntryIngester defaultIngester;
 
     @Override
@@ -30,21 +34,18 @@ public class SwordAffiliatingIngester implements SwordEntryIngester {
                 VerboseDescription verboseDescription)
             throws DSpaceSwordException, SwordError, SwordAuthException, SwordServerException
     {
-        /* Check and see if we need to use the defaultIngester on this deposit */
-        if (!deposit.getSwordEntry().getEntry().getContent().contains("affiliate")) {
+        if (deposit.getSwordEntry().getEntry().getFirstChild() != null &&
+                deposit.getSwordEntry().getEntry().getFirstChild().getQName().getLocalPart() == "affiliate")
+        {
+            try {
+                Item item = Item.find(context, dSpaceObject.getID());
+                return affiliate(context, item, deposit);
+            } catch (SQLException e) {
+                throw new DSpaceSwordException(e);
+            }
+        } else {
             defaultIngester = new SimpleDCEntryIngester();
             return defaultIngester.ingest(context, deposit, dSpaceObject, verboseDescription);
-        }
-
-        try {
-            String entryId = deposit.getSwordEntry().getEntry().getId().toASCIIString();
-            /* Decode id */
-            int endTag = entryId.lastIndexOf("/");
-            int id = Integer.parseInt(entryId.substring(endTag));
-            Item item = Item.find(context, id);
-            return affiliate(context, item, deposit);
-        } catch (SQLException e) {
-            throw new DSpaceSwordException(e);
         }
     }
 
@@ -53,16 +54,29 @@ public class SwordAffiliatingIngester implements SwordEntryIngester {
                 VerboseDescription verboseDescription, DepositResult depositResult, boolean b)
             throws DSpaceSwordException, SwordError, SwordAuthException, SwordServerException
     {
-        /* Check and see if we need to use the defaultIngester on this deposit */
-        if (!deposit.getSwordEntry().getEntry().getContent().contains("affiliate")) {
+        if (deposit.getSwordEntry().getEntry().getFirstChild() != null &&
+                deposit.getSwordEntry().getEntry().getFirstChild().getQName().getLocalPart() == "affiliate")
+        {
+            Item item = null;
+            /* Try and extract item from deposit result */
+            if (depositResult != null) {
+                item = depositResult.getItem();
+            }
+
+            /* Null item? Load by dspaceObject id */
+            if (item == null) {
+                try {
+                    item = Item.find(context, dSpaceObject.getID());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    throw new SwordServerException(e);
+                }
+            }
+            return affiliate(context, item, deposit);
+
+        } else {
             defaultIngester = new SimpleDCEntryIngester();
             return defaultIngester.ingest(context, deposit, dSpaceObject, verboseDescription, depositResult, b);
-        }
-
-        if (depositResult != null) {
-            return affiliate(context, depositResult.getItem(), deposit);
-        } else {
-            throw new DSpaceSwordException("Empty DepositResult! Unable to proceed.");
         }
     }
 
@@ -89,6 +103,10 @@ public class SwordAffiliatingIngester implements SwordEntryIngester {
             Collection[] collections = Collection.findAll(context);
             Arrays.sort(collections, new CollectionsComparator());
 
+            /* Workaround for auth issues in context editing */
+            boolean ignore = context.ignoreAuthorization();
+            context.setIgnoreAuthorization(true);
+
             /* Get the XML contained within the deposit */
             SwordEntry se = deposit.getSwordEntry();
             List<Element> e = se.getEntry().getElements();
@@ -101,23 +119,20 @@ public class SwordAffiliatingIngester implements SwordEntryIngester {
                 for (Element element : elements) {
                     String name = element.getAttributeValue("name");
                     Collection collection = binarySearch(collections, name);
-                    if (!item.isOwningCollection(collection)) {
-                        try {
-                            collection.addItem(item);
-                            collection.update();
-                        } catch (AuthorizeException except) {
-                            System.out.println(except.getMessage());
-                            except.printStackTrace();
-                            throw except;
-                        }
+                    if (collection != null && !item.isIn(collection)) {
+                        collection.addItem(item);
+                        collection.update();
                     }
                 }
             }
 
+            /* Reset context */
+            context.setIgnoreAuthorization(ignore);
+
             /* Result processing */
             DepositResult ret = new DepositResult();
             ret.setItem(item);
-            ret.setTreatment("Added item to requested non-owning collections.");
+            ret.setTreatment("Affiliated item to requested available collections.");
             return ret;
 
         } catch (SQLException e) {

@@ -9,7 +9,7 @@
         <dependency>
             <groupId>org.dspace</groupId>
             <artifactId>dspace-swordv2</artifactId>
-            <version>1.8.2</version>
+            <version>3.1-UPDATE</version>
             <type>jar</type>
             <classifier>classes</classifier>
         </dependency>
