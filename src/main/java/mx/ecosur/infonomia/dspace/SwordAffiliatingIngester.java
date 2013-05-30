@@ -81,7 +81,12 @@ public class SwordAffiliatingIngester implements SwordEntryIngester {
     }
 
     private Collection binarySearch(Collection[] collections, String collection) {
-        return collections [binarySearch(collections, collection, 0, collections.length)];
+        int idx = binarySearch(collections, collection, 0, collections.length);
+        if (idx >= 0) {
+            return collections [idx];
+        } else {
+            return null;
+        }
     }
 
     private int binarySearch (Collection[] collections, String key, int s, int e) {
