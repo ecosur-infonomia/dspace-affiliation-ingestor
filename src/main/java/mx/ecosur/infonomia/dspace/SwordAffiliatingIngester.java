@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * sword update deposit.
  *
  * Otherwise, invokes the default Entry ingestion behavior coded
- * within the SimpleDCEntryIngester (default ingester).
+ * within the ExtendedMetadataEntryIngester (default ingester).
  *
  * @author "Andrew Waterman" <awaterma@ecosur.mx>
  */
@@ -24,7 +24,7 @@ public class SwordAffiliatingIngester implements SwordEntryIngester {
     private final AffiliateCommand command = new AffiliateCommand();
 
     /* Default ingester. */
-    private SimpleDCEntryIngester defaultIngester;
+    private ExtendedMetadataEntryIngester ingester;
 
     @Override
     public DepositResult ingest(Context context, Deposit deposit, DSpaceObject dSpaceObject,
@@ -36,13 +36,13 @@ public class SwordAffiliatingIngester implements SwordEntryIngester {
         {
             try {
                 Item item = Item.find(context, dSpaceObject.getID());
-                return command.execute(context, item, deposit);
+                return command.execute(context, deposit, item);
             } catch (SQLException e) {
                 throw new DSpaceSwordException(e);
             }
         } else {
-            defaultIngester = new SimpleDCEntryIngester();
-            return defaultIngester.ingest(context, deposit, dSpaceObject, verboseDescription);
+            ingester = new ExtendedMetadataEntryIngester();
+            return ingester.ingest(context, deposit, dSpaceObject, verboseDescription);
         }
     }
 
@@ -69,11 +69,11 @@ public class SwordAffiliatingIngester implements SwordEntryIngester {
                     throw new SwordServerException(e);
                 }
             }
-            return command.execute(context, item, deposit);
+            return command.execute(context, deposit, item);
 
         } else {
-            defaultIngester = new SimpleDCEntryIngester();
-            return defaultIngester.ingest(context, deposit, dSpaceObject, verboseDescription, depositResult, b);
+            ingester = new ExtendedMetadataEntryIngester();
+            return ingester.ingest(context, deposit, dSpaceObject, verboseDescription, depositResult, b);
         }
     }
 }

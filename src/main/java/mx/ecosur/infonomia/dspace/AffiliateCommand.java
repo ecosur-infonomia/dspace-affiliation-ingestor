@@ -15,9 +15,13 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.TreeMap;
 
+/**
+ * Affiliates a given Item with a list of known collections, pushed up in a deposit.
+ */
+
 public class AffiliateCommand {
 
-    DepositResult execute(Context context, Item item, Deposit deposit) throws SwordServerException, SwordAuthException {
+    DepositResult execute(Context context, Deposit deposit, Item item) throws SwordServerException, SwordAuthException {
         try {
             Collection[] collections = Collection.findAll(context);
             TreeMap<String, Integer> map = new TreeMap<String, Integer>();
