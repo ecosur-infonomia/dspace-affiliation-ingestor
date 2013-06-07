@@ -1,7 +1,8 @@
-AffiliatingIngester
+Ecosur Custom Ingesters
 ===========================
 
-An ingester for dspace that affiliates a given item with a sequence of collections.
+Custom ingesters for dspace that affiliates a given item with a sequence of collections and
+adds custom metadata (defined within DSpace) to the Item being deposited.
 
 In order to use this Ingester, please do the following:
 
@@ -17,7 +18,7 @@ In order to use this Ingester, please do the following:
          <!-- Introduce the Affiliation ingestor -->
          <dependency>
           <groupId>mx.ecosur.infonomia.dspace</groupId>
-          <artifactId>AfiliatingIngester</artifactId>
+          <artifactId>AffiliatingIngester</artifactId>
           <version>1.0-SNAPSHOT</version>
          </dependency>
         </dependencies>
@@ -53,3 +54,16 @@ as defined int the Swordv2 specification:
 You can list as many collections by name in the XML above as you would like to affiliate the
 item with. Items will be affiliated only one time per collection (no duplicates). Non-existant
 collections will simply be ignored.
+
+5) Metadata
+
+Custom metadata can be added to the Atom entry posted to the main SwordServer by using this
+custom ingester. Simply use the dublin core xmlns to properly post data, as explained in the
+SwordV2 documentation. For other kinds of metadata, such as marc, use the "element" attribute
+for xml terms in order to affiliate non-parseable element names (such as numbers, "260", as in
+marc). The ingester will pickup such metadata, compare the namespace against the registered
+namespaces within DSpace, and add the item. 
+
+Note: use of extended metadata requires the application of pull-request 230 to your local
+DSpace installation [https://github.com/DSpace/DSpace/pull/230].
+
