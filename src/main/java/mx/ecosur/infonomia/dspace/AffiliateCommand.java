@@ -30,10 +30,6 @@ public class AffiliateCommand {
                 map.put(collections[i].getName(), i);
             }
 
-            /* Workaround for auth issues in context editing */
-            boolean ignore = context.ignoreAuthorization();
-            context.setIgnoreAuthorization(true);
-
             /* Get the XML contained within the deposit */
             SwordEntry se = deposit.getSwordEntry();
             List<Element> e = se.getEntry().getElements();
@@ -53,9 +49,6 @@ public class AffiliateCommand {
                     }
                 }
             }
-
-            /* Reset context */
-            context.setIgnoreAuthorization(ignore);
 
             /* Result processing */
             DepositResult ret = new DepositResult();
